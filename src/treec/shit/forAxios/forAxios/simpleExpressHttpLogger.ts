@@ -1,7 +1,7 @@
 import { ErrorRequestHandler, Request, Response } from "express"
 import { IHttpLogger } from "../httpLogger.interface"
 import { logObjectBuilderForExpress } from "../logObjectBuilders.interface"
-import { ISensativeValuesEncryptor } from "../../sensativeValuesEncryptor.interface"
+import { ISensativeValuesEncryptor } from "../../../HttpLogger/sensativeKeisEncryptor/sensativeValuesEncryptor.interface"
 
 export class expressHttpLogger implements IHttpLogger<Request, Response, ErrorRequestHandler>{
     

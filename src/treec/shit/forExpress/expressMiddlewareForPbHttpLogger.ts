@@ -1,5 +1,5 @@
 import { Response } from "express";
-import { IPbHttpLogger } from "../pbHttpLogger.interface";
+import { IPbHttpLogger } from "../../pbHttpLogger.interface";
 import { IPbExpressRequest } from "./pbExpressRequest";
 import { IPbHttpLoggerForExpress } from "./pbHttpLoggerForExpress";
 

@@ -1,9 +1,8 @@
 import { Response} from "express"
-import { IPbRequestErrorLogData, IPbRequestLogData, IPbResponseErrorLogData, IPbResponseLogData } from "../pbHttpLogData.interface"
-import { pbHttpLogDataBuilder } from "../pbHttpLogDataBuilder.interface"
+import { IPbRequestErrorLogData, IPbRequestLogData, IPbResponseErrorLogData, IPbResponseLogData } from "../../pbHttpLogObjects.interfaces"
+import { pbHttpLogDataBuilder } from "../../HttpLogger/pbHttpLogObjectBuilder/pbHttpLogObjectBuilder.interface"
 import { IPbExpressRequest } from "./pbExpressRequest";
 
-export interface ILogObjectBuilderForExpress extends pbHttpLogDataBuilder<IPbExpressRequest, Response, Error> {}
 
 interface IDurationCalculator<T>{
     setStartTime:(toBeMeasured:T)=>T,
@@ -11,7 +10,7 @@ interface IDurationCalculator<T>{
     defualtDurationFormat:(toBeMeasured:T)=>string
 }
 
-export class PbHttpLogObjectBuilderForExpress implements ILogObjectBuilderForExpress{
+export class PbHttpLogObjectBuilderForExpress implements pbHttpLogDataBuilder<IPbExpressRequest, Response, Error> {
 
     private serviceName:string;
     private reqTime: IDurationCalculator<IPbExpressRequest>;

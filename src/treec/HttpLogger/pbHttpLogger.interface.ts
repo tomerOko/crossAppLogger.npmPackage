@@ -1,9 +1,7 @@
-import { pbHttpLogDataBuilder } from "./pbHttpLogDataBuilder.interface";
-
 export interface IPbHttpLogger <request, response, error>{
     logRequest : (req: request) => void,
     logResponse : (req: request, res: response) => void,
-    logRequestError : (req: request, err: error) => void, //todo: wh
+    logRequestError : (req: request, err: error) => void, 
     logResponseError : (req : request, res: response, err: error ) => void,
 }
 

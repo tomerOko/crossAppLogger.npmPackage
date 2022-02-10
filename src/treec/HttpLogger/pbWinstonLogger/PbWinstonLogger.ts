@@ -1,4 +1,8 @@
-export class PbWinstonLogger implements PbWinstonLogger {
+import { ILogObjectBuilderForExpress } from "../shit/forExpress/PbHttpLogObjectBuilderForExpress";
+
+export class PbWinstonLogger implements ILogObjectBuilderForExpress {
+
+
 
 }
 

@@ -1,6 +1,6 @@
 import { Response } from "express"
-import { IPbHttpLogger } from "../pbHttpLogger.interface";
-import { ISensativeValuesEncryptor } from "../sensativeValuesEncryptor.interface"
+import { IPbHttpLogger } from "../../pbHttpLogger.interface";
+import { ISensativeValuesEncryptor } from "../../HttpLogger/sensativeKeisEncryptor/sensativeValuesEncryptor.interface"
 import { IPbExpressRequest } from "./pbExpressRequest";
 import { ILogObjectBuilderForExpress } from "./PbHttpLogObjectBuilderForExpress";
 
@@ -9,9 +9,10 @@ export interface IPbHttpLoggerForExpress extends IPbHttpLogger<IPbExpressRequest
 export class pbHttpLoggerForExpress implements IPbHttpLoggerForExpress {
     
     private logObjectBuilder : ILogObjectBuilderForExpress;
-    private sensativeValuesEncryptor : ISensativeValuesEncryptor
+    private sensativeValuesEncryptor : ISensativeValuesEncryptor;
+    private logger: IPbOutputLogger
 
-    constructor(logObjectBuilder : ILogObjectBuilderForExpress, sensativeValuesEncryptor : ISensativeValuesEncryptor){
+    constructor(logObjectBuilder : ;, sensativeValuesEncryptor : ISensativeValuesEncryptor){
         this.logObjectBuilder = logObjectBuilder;
         this.sensativeValuesEncryptor =  sensativeValuesEncryptor;
     }

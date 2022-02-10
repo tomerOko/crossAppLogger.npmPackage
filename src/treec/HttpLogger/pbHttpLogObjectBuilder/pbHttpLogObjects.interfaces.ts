@@ -1,7 +1,7 @@
 import { IncomingHttpHeaders, OutgoingHttpHeaders } from "http";
  
 
-interface ILogGeneralProperties<T extends ILogRequestProps | ILogResponseProps | ILogRequestErrorProps | ILogResponseErrorProps >{
+export interface ILogGeneralProperties<T extends ILogRequestProps | ILogResponseProps | ILogRequestErrorProps | ILogResponseErrorProps >{
     type:"REQUEST" | "VALID RESPONSE" | "ERROR RESPONSE" | "INVALID REQUEST",
     requestID:{
         uId: string,
@@ -44,9 +44,9 @@ interface ILogResponseErrorProps extends ILogResponseProps, ILogErrorProps{}
 
 
 
-export interface IPbRequestLogData extends ILogGeneralProperties<ILogRequestProps>{}
-export interface IPbResponseLogData extends ILogGeneralProperties<ILogResponseProps>{}
-export interface IPbRequestErrorLogData extends ILogGeneralProperties<ILogRequestErrorProps>{}
-export interface IPbResponseErrorLogData extends ILogGeneralProperties<ILogResponseErrorProps>{}
+export interface IPbRequestLogObject extends ILogGeneralProperties<ILogRequestProps>{}
+export interface IPbResponseLogObject extends ILogGeneralProperties<ILogResponseProps>{}
+export interface IPbRequestErrorLogObject extends ILogGeneralProperties<ILogRequestErrorProps>{}
+export interface IPbResponseErrorLogObject extends ILogGeneralProperties<ILogResponseErrorProps>{}
 
-export type IPbHttpLogData = IPbRequestLogData | IPbResponseLogData |IPbRequestErrorLogData | IPbResponseErrorLogData
+export type IPbHttpLogObjects = IPbRequestLogObject | IPbResponseLogObject |IPbRequestErrorLogObject | IPbResponseErrorLogObject

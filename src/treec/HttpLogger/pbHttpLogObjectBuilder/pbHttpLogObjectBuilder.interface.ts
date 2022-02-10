@@ -1,29 +1,26 @@
-import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios"
-import { ErrorRequestHandler, Request, Response } from "express"
-import { IPbRequestErrorLogData, IPbRequestLogData, IPbResponseErrorLogData, IPbResponseLogData } from "./pbHttpLogData.interface"
+import { IPbRequestErrorLogObject, IPbRequestLogObject, IPbResponseErrorLogObject, IPbResponseLogObject } from "./pbHttpLogObjects.interfaces"
 
-export interface pbHttpLogDataBuilder<request, response, error> {
-    buildLogObjectOfRequest : (req: request) => IPbRequestLogData,
-    buildLogObjectOfResponse : (req: request, res: response) => IPbResponseLogData,
-    buildLogObjectOfRequestError : (req: request, err: error) => IPbRequestErrorLogData,
-    buildLogObjectOfResponseError : (req : request, res: response, err: error ) => IPbResponseErrorLogData
+export interface pbHttpLogObjectBuilder<request, response, error> {
+    buildLogObjectOfRequest : (req: request) => IPbRequestLogObject,
+    buildLogObjectOfResponse : (req: request, res: response) => IPbResponseLogObject,
+    buildLogObjectOfRequestError : (req: request, err: error) => IPbRequestErrorLogObject,
+    buildLogObjectOfResponseError : (req : request, res: response, err: error ) => IPbResponseErrorLogObject
 }
 
-export interface logObjectBuilderForAxios extends pbHttpLogDataBuilder<AxiosRequestConfig, AxiosResponse, AxiosError> {}
 
-export class PbHttpLogDataBuilderMock implements pbHttpLogDataBuilder<any, any, any>{
+export class PbHttpLogObjectBuilderMock implements pbHttpLogObjectBuilder<any, any, any>{
 
-    private static singletonInstance:PbHttpLogDataBuilderMock;
+    private static singletonInstance:PbHttpLogObjectBuilderMock;
     private constructor(){}
 
-    public static getInstance():PbHttpLogDataBuilderMock{
-        if (!PbHttpLogDataBuilderMock.singletonInstance){
-            PbHttpLogDataBuilderMock.singletonInstance=new PbHttpLogDataBuilderMock()
+    public static getInstance():PbHttpLogObjectBuilderMock{
+        if (!PbHttpLogObjectBuilderMock.singletonInstance){
+            PbHttpLogObjectBuilderMock.singletonInstance=new PbHttpLogObjectBuilderMock()
         }
-        return PbHttpLogDataBuilderMock.singletonInstance
+        return PbHttpLogObjectBuilderMock.singletonInstance
     }
 
-    buildLogObjectOfRequest(req: any):IPbRequestLogData{
+    buildLogObjectOfRequest(req: any):IPbRequestLogObject{
         return{
             HttpProps:{
                 headers:{some:"header"},
@@ -43,7 +40,7 @@ export class PbHttpLogDataBuilderMock implements pbHttpLogDataBuilder<any, any, 
         }
     }
 
-    buildLogObjectOfResponse(req: any, res: any):IPbResponseLogData{
+    buildLogObjectOfResponse(req: any, res: any):IPbResponseLogObject{
         return{
             HttpProps:{
                 headers:{some:"header"},
@@ -66,7 +63,7 @@ export class PbHttpLogDataBuilderMock implements pbHttpLogDataBuilder<any, any, 
     }
     
 
-    buildLogObjectOfRequestError(req: any, err: any):IPbRequestErrorLogData{
+    buildLogObjectOfRequestError(req: any, err: any):IPbRequestErrorLogObject{
         return{
             HttpProps:{
                 headers:{some:"header"},
@@ -89,7 +86,7 @@ export class PbHttpLogDataBuilderMock implements pbHttpLogDataBuilder<any, any, 
         }
     }
 
-    buildLogObjectOfResponseError(req :any, res: any, err: any ):IPbResponseErrorLogData{
+    buildLogObjectOfResponseError(req :any, res: any, err: any ):IPbResponseErrorLogObject{
         return{
             HttpProps:{
                 headers:{some:"header"},

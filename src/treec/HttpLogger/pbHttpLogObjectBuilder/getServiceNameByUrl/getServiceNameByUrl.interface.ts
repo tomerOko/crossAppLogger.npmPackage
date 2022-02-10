@@ -1,5 +1,5 @@
 export interface IgetServiceNameByUrl{
-    convert: (url : string) => string
+    getServiceNameByUrl: (url : string) => string
 }
 
 export class mockGetServiceNameByUrl {
