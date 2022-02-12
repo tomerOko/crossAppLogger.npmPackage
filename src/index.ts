@@ -1,5 +1,5 @@
 import express from 'express'
-import { axiosTest } from './treec/shit/forAxios/forAxios/deleteMe'
+import { axiosTest } from './treec/forAxios/deleteMe'
 const app = express()
 const port = 3000
 

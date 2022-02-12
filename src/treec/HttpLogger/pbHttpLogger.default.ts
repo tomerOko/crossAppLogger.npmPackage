@@ -1,7 +1,7 @@
 import { IPbHttpLogger } from "./pbHttpLogger.interface";
 import { pbHttpLogObjectBuilder } from "./pbHttpLogObjectBuilder/pbHttpLogObjectBuilder.interface";
 import { ISensativeValuesEncryptor } from "./sensativeKeisEncryptor/sensativeValuesEncryptor.interface";
-import { IDeepCloner } from "../DeepCloner/pbDeepClonner.interface";
+import { IDeepCloner } from "./DeepCloner/pbDeepClonner.interface";
 import { ILogGeneralProperties } from "./pbHttpLogObjectBuilder/pbHttpLogObjects.interfaces";
 
 
@@ -20,6 +20,7 @@ export class PbHttpLogger<request, response, err> implements IPbHttpLogger<reque
     }
 
     logRequest(req: request):void{
+        
         const cloned = this.deepClone.clone({req})
         const logObject = this.logObjectBuilder.buildLogObjectOfRequest(cloned.req)
         this.encryptAndLog(logObject)
