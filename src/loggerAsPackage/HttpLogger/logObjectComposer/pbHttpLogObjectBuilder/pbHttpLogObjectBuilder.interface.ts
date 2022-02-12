@@ -1,15 +1,16 @@
 import { IPbRequestErrorLogObject, IPbRequestLogObject, IPbResponseErrorLogObject, IPbResponseLogObject } from "../../pbHttpLogObjects.interfaces"
 
 
-export interface pbHttpLogObjectBuilder<request, response, error, additionalData = request> {
+export interface pbHttpLogObjectBuilder<request, response, error, additionalData> {
     buildLogObjectOfRequest : (req: request) => IPbRequestLogObject,
     buildLogObjectOfResponse : (req: request & additionalData, res: response) => IPbResponseLogObject,
     buildLogObjectOfRequestError : (req: request, err: error) => IPbRequestErrorLogObject,
     buildLogObjectOfResponseError : (req : request & additionalData, res: response, err: error ) => IPbResponseErrorLogObject,
+    addPropertiesToOriginalRequest: (req: request & Partial<additionalData>) => asserts req is request & additionalData,
 }
 
 
-export class PbHttpLogObjectBuilderMock implements pbHttpLogObjectBuilder<any, any, any>{
+export class PbHttpLogObjectBuilderMock implements pbHttpLogObjectBuilder<any, any, any, {example:string}>{
 
     private static singletonInstance:PbHttpLogObjectBuilderMock;
     private constructor(){}
@@ -113,9 +114,8 @@ export class PbHttpLogObjectBuilderMock implements pbHttpLogObjectBuilder<any, a
     }
 
 
-    setStartTime<T extends keyable>(toBeMeasured: T & Partial<IHaveStartTime>): T & IHaveStartTime {
-        toBeMeasured.startTime= process.hrtime()
-        return toBeMeasured as T & IHaveStartTime
+    addPropertiesToOriginalRequest(req: any): asserts req is any & {example:string}{
+        req.example = "hallow"
     }
 
 }

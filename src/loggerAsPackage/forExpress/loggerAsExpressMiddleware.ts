@@ -1,16 +1,15 @@
 import { Response } from "express";
-import { IPbHttpLogger } from "../../pbHttpLogger.interface";
-import { IPbExpressRequest } from "./pbExpressRequest";
-import { IPbHttpLoggerForExpress } from "./pbHttpLoggerForExpress";
+import { IPbExpressRequest } from "../HttpLogger/logObjectComposer/pbHttpLogObjectBuilder/pbHttpLogObjectBuilderForExpress";
+import { IPbHttpLogger } from "../HttpLogger/pbHttpLogger.interface";
 
-export interface IExpressMiddlewareForPbHttpLogger{
+export interface ILoggerAsExpressMiddleware{
     logReqResAndErrors: (req:IPbExpressRequest, res: Response) => void
 }
 
-export class ExpressMiddlewareForPbHttpLogger implements IExpressMiddlewareForPbHttpLogger{
+export class LoggerAsExpressMiddleware implements ILoggerAsExpressMiddleware{
 
-    private logger: IPbHttpLoggerForExpress
-    constructor(logger :IPbHttpLoggerForExpress ){
+    private logger: IPbHttpLogger <IPbExpressRequest, Response, Error> 
+    constructor(logger :IPbHttpLogger <IPbExpressRequest, Response, Error>  ){
         this.logger = logger;
     }
     

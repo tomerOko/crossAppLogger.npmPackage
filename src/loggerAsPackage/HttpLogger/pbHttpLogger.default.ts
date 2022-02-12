@@ -8,18 +8,17 @@ import { ILogObjectComposer } from "./logObjectComposer/logObjectComposer.interf
 
 export class PbHttpLogger<request, response, err> implements IPbHttpLogger<request, response, err> {
     
-    private logObjectComposer : ILogObjectComposer<request, response, err, IHaveStartTime>;
+    private logObjectComposer : ILogObjectComposer<request, response, err>;
     private sensativeValuesEncryptor : ISensativeValuesEncryptor;
     private logger: IPbOutputLogger;
 
-    constructor(logObjectComposer :  ILogObjectComposer<request, response, err , IHaveStartTime>, sensativeValuesEncryptor : ISensativeValuesEncryptor, deepClone: IDeepCloner, logger: IPbOutputLogger){
+    constructor(logObjectComposer :  ILogObjectComposer<request, response, err>, sensativeValuesEncryptor : ISensativeValuesEncryptor, deepClone: IDeepCloner, logger: IPbOutputLogger){
         this.logObjectComposer = logObjectComposer;
         this.sensativeValuesEncryptor =  sensativeValuesEncryptor;
         this.logger = logger;
     }
 
     logRequest(req: request):void{
-        this.logObjectComposer.addPropertiesToOriginalRequest(req)
         const builtLog = this.logObjectComposer.composeRequestLogObject(req)
         this.encryptAndLog(builtLog)
     }
