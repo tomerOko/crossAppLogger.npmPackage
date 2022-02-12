@@ -1,12 +1,12 @@
 import { IPbRequestErrorLogObject, IPbRequestLogObject, IPbResponseErrorLogObject, IPbResponseLogObject } from "./pbHttpLogObjects.interfaces"
-import { IWithStartTime } from "./requestHandlingDurationCalculator.interface";
+
 
 export interface pbHttpLogObjectBuilder<request, response, error> {
     buildLogObjectOfRequest : (req: request) => IPbRequestLogObject,
-    buildLogObjectOfResponse : (req: request, res: response) => IPbResponseLogObject,
+    buildLogObjectOfResponse : (req: request & IHaveStartTime, res: response) => IPbResponseLogObject,
     buildLogObjectOfRequestError : (req: request, err: error) => IPbRequestErrorLogObject,
-    buildLogObjectOfResponseError : (req : request, res: response, err: error ) => IPbResponseErrorLogObject,
-    setStartTime<T extends Object>(toBeMeasured:T):T&IWithStartTime,
+    buildLogObjectOfResponseError : (req : request & IHaveStartTime, res: response, err: error ) => IPbResponseErrorLogObject,
+    setStartTime<T extends keyable>(toBeMeasured:T):T&IHaveStartTime,
 }
 
 
@@ -113,10 +113,12 @@ export class PbHttpLogObjectBuilderMock implements pbHttpLogObjectBuilder<any, a
         }
     }
 
-    StartTime<T extends {[key:string]:any}>(toBeMeasured:T extends {[key:string] :any}):any{
-        // Object.in
+
+    setStartTime<T extends keyable>(toBeMeasured: T & Partial<IHaveStartTime>): T & IHaveStartTime {
         toBeMeasured.startTime= process.hrtime()
-        // return toBeMeasured
+        return toBeMeasured as T & IHaveStartTime
     }
 
 }
+
+

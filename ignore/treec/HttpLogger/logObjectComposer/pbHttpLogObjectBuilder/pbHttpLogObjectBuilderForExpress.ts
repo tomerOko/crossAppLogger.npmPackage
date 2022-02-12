@@ -1,14 +1,13 @@
 import { Request, Response} from "express"
 import { IPbRequestErrorLogObject, IPbRequestLogObject, IPbResponseErrorLogObject, IPbResponseLogObject } from "./pbHttpLogObjects.interfaces"
 import { pbHttpLogObjectBuilder } from "./pbHttpLogObjectBuilder.interface";
-import { IRequestHandlingDurationCalculator } from "./requestHandlingDurationCalculator.interface";
+import { IRequestHandlingDurationCalculator } from "./requestHandlingDurationCalculator/requestHandlingDurationCalculator.interface";
 
 
 export interface IPbExpressRequest extends Request{
     uId:string;
     transactionUid:string;
     senderName:string
-    startTime?:[number,number]
 }
 
 
@@ -37,7 +36,7 @@ export class PbHttpLogObjectBuilderForExpress implements pbHttpLogObjectBuilder<
         return logObject
     }
 
-    buildLogObjectOfResponse(req: IPbExpressRequest, res: Response):IPbResponseLogObject{
+    buildLogObjectOfResponse(req: IPbExpressRequest & IHaveStartTime, res: Response):IPbResponseLogObject{
         const logObject: IPbResponseLogObject = {
             type:"VALID RESPONSE",
             HttpProps: {
@@ -60,7 +59,7 @@ export class PbHttpLogObjectBuilderForExpress implements pbHttpLogObjectBuilder<
         return logObject
     }
 
-    buildLogObjectOfResponseError(req : IPbExpressRequest, res: Response, err: Error ):IPbResponseErrorLogObject{
+    buildLogObjectOfResponseError(req : IPbExpressRequest & IHaveStartTime, res: Response, err: Error ):IPbResponseErrorLogObject{
         const logObject: IPbResponseErrorLogObject = {
             type:"VALID RESPONSE",
             HttpProps: {
@@ -73,7 +72,7 @@ export class PbHttpLogObjectBuilderForExpress implements pbHttpLogObjectBuilder<
         return logObject
     }
 
-    responseHttpProps(req: IPbExpressRequest, res:Response){
+    responseHttpProps(req: IPbExpressRequest & IHaveStartTime, res:Response){
         return{
             responseFrom: this.serviceName,
             responseTo:req.senderName,
@@ -115,5 +114,10 @@ export class PbHttpLogObjectBuilderForExpress implements pbHttpLogObjectBuilder<
             message: "",
             level:"",
         }
+    }
+
+    setStartTime<T extends keyable>(toBeMeasured: T & Partial<IHaveStartTime>): T & IHaveStartTime {
+        toBeMeasured.startTime= process.hrtime()
+        return toBeMeasured as T & IHaveStartTime
     }
 }

@@ -1,8 +1,8 @@
 import { IPbHttpLogger } from "./pbHttpLogger.interface";
-import { pbHttpLogObjectBuilder } from "./pbHttpLogObjectBuilder/pbHttpLogObjectBuilder.interface";
+import { pbHttpLogObjectBuilder } from "./logObjectComposer/pbHttpLogObjectBuilder/pbHttpLogObjectBuilder.interface";
 import { ISensativeValuesEncryptor } from "./sensativeKeisEncryptor/sensativeValuesEncryptor.interface";
-import { IDeepCloner } from "./DeepCloner/pbDeepClonner.interface";
-import { ILogGeneralProperties } from "./pbHttpLogObjectBuilder/pbHttpLogObjects.interfaces";
+import { IDeepCloner } from "./logObjectComposer/DeepCloner/pbDeepClonner.interface";
+import { ILogGeneralProperties } from "./logObjectComposer/pbHttpLogObjectBuilder/pbHttpLogObjects.interfaces";
 
 
 export class PbHttpLogger<request, response, err> implements IPbHttpLogger<request, response, err> {
@@ -22,31 +22,31 @@ export class PbHttpLogger<request, response, err> implements IPbHttpLogger<reque
     logRequest(req: request):void{
         
         const cloned = this.deepClone.clone({req})
-        const logObject = this.logObjectBuilder.buildLogObjectOfRequest(cloned.req)
-        this.encryptAndLog(logObject)
+        const builtLog = this.logObjectBuilder.buildLogObjectOfRequest(cloned.req)
+        this.encryptAndLog(builtLog)
     }
 
     logResponse(req: request, res: response):void{
         const cloned = this.deepClone.clone({req, res})
-        const logObject = this.logObjectBuilder.buildLogObjectOfResponse(cloned.req ,cloned.res)
-        this.encryptAndLog(logObject)
+        const builtLog = this.logObjectBuilder.buildLogObjectOfResponse(cloned.req ,cloned.res)
+        this.encryptAndLog(builtLog)
     }
 
     logRequestError(req: request, err: err):void{
         const cloned = this.deepClone.clone({req, err})
-        const logObject = this.logObjectBuilder.buildLogObjectOfRequestError(cloned.req, cloned.err)
-        this.encryptAndLog(logObject)
+        const builtLog = this.logObjectBuilder.buildLogObjectOfRequestError(cloned.req, cloned.err)
+        this.encryptAndLog(builtLog)
 
     }
 
     logResponseError(req : request, res: response, err: err ):void{
         const cloned = this.deepClone.clone({req, res, err})
-        const logObject = this.logObjectBuilder.buildLogObjectOfResponseError(cloned.req, cloned.res, cloned.err)
-        this.encryptAndLog(logObject)
+        const builtLog = this.logObjectBuilder.buildLogObjectOfResponseError(cloned.req, cloned.res, cloned.err)
+        this.encryptAndLog(builtLog)
     }
 
-    private encryptAndLog(logObject:ILogGeneralProperties<any>){
-        const encryptedLogObject = this.sensativeValuesEncryptor.encrypt(logObject)
+    private encryptAndLog(builtLog:ILogGeneralProperties<any>){
+        const encryptedLogObject = this.sensativeValuesEncryptor.encrypt(builtLog)
         this.logger.log(encryptedLogObject)
     }
 }
