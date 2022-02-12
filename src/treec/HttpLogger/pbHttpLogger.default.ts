@@ -1,47 +1,42 @@
 import { IPbHttpLogger } from "./pbHttpLogger.interface";
-import { pbHttpLogObjectBuilder } from "./logObjectComposer/pbHttpLogObjectBuilder/pbHttpLogObjectBuilder.interface";
 import { ISensativeValuesEncryptor } from "./sensativeKeisEncryptor/sensativeValuesEncryptor.interface";
 import { IDeepCloner } from "./logObjectComposer/DeepCloner/pbDeepClonner.interface";
-import { ILogGeneralProperties } from "./logObjectComposer/pbHttpLogObjectBuilder/pbHttpLogObjects.interfaces";
+import { ILogGeneralProperties } from "./pbHttpLogObjects.interfaces";
+import { LogObjectComposer } from "./logObjectComposer/logObjectComposer.dufault";
+import { ILogObjectComposer } from "./logObjectComposer/logObjectComposer.interface";
 
 
 export class PbHttpLogger<request, response, err> implements IPbHttpLogger<request, response, err> {
     
-    private logObjectBuilder : pbHttpLogObjectBuilder<request, response, err>;
+    private logObjectComposer : ILogObjectComposer<request, response, err, IHaveStartTime>;
     private sensativeValuesEncryptor : ISensativeValuesEncryptor;
-    private deepClone: IDeepCloner;
     private logger: IPbOutputLogger;
 
-    constructor(logObjectBuilder : pbHttpLogObjectBuilder<request, response, err>, sensativeValuesEncryptor : ISensativeValuesEncryptor, deepClone: IDeepCloner, logger: IPbOutputLogger){
-        this.logObjectBuilder = logObjectBuilder;
+    constructor(logObjectComposer :  ILogObjectComposer<request, response, err , IHaveStartTime>, sensativeValuesEncryptor : ISensativeValuesEncryptor, deepClone: IDeepCloner, logger: IPbOutputLogger){
+        this.logObjectComposer = logObjectComposer;
         this.sensativeValuesEncryptor =  sensativeValuesEncryptor;
-        this.deepClone = deepClone;
         this.logger = logger;
     }
 
     logRequest(req: request):void{
-        
-        const cloned = this.deepClone.clone({req})
-        const builtLog = this.logObjectBuilder.buildLogObjectOfRequest(cloned.req)
+        this.logObjectComposer.addPropertiesToOriginalRequest(req)
+        const builtLog = this.logObjectComposer.composeRequestLogObject(req)
         this.encryptAndLog(builtLog)
     }
 
     logResponse(req: request, res: response):void{
-        const cloned = this.deepClone.clone({req, res})
-        const builtLog = this.logObjectBuilder.buildLogObjectOfResponse(cloned.req ,cloned.res)
+        const builtLog = this.logObjectComposer.composeResponseLogObject(req as request & IHaveStartTime ,res)
         this.encryptAndLog(builtLog)
     }
 
     logRequestError(req: request, err: err):void{
-        const cloned = this.deepClone.clone({req, err})
-        const builtLog = this.logObjectBuilder.buildLogObjectOfRequestError(cloned.req, cloned.err)
+        const builtLog = this.logObjectComposer.composeRequestErrorLogObject(req, err)
         this.encryptAndLog(builtLog)
 
     }
 
     logResponseError(req : request, res: response, err: err ):void{
-        const cloned = this.deepClone.clone({req, res, err})
-        const builtLog = this.logObjectBuilder.buildLogObjectOfResponseError(cloned.req, cloned.res, cloned.err)
+        const builtLog = this.logObjectComposer.composeResponseErrorLogObject(req as request & IHaveStartTime, res, err)
         this.encryptAndLog(builtLog)
     }
 

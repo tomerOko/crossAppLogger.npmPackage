@@ -1,12 +1,11 @@
-import { IPbRequestErrorLogObject, IPbRequestLogObject, IPbResponseErrorLogObject, IPbResponseLogObject } from "./pbHttpLogObjects.interfaces"
+import { IPbRequestErrorLogObject, IPbRequestLogObject, IPbResponseErrorLogObject, IPbResponseLogObject } from "../../pbHttpLogObjects.interfaces"
 
 
-export interface pbHttpLogObjectBuilder<request, response, error> {
+export interface pbHttpLogObjectBuilder<request, response, error, additionalData = request> {
     buildLogObjectOfRequest : (req: request) => IPbRequestLogObject,
-    buildLogObjectOfResponse : (req: request & IHaveStartTime, res: response) => IPbResponseLogObject,
+    buildLogObjectOfResponse : (req: request & additionalData, res: response) => IPbResponseLogObject,
     buildLogObjectOfRequestError : (req: request, err: error) => IPbRequestErrorLogObject,
-    buildLogObjectOfResponseError : (req : request & IHaveStartTime, res: response, err: error ) => IPbResponseErrorLogObject,
-    setStartTime<T extends keyable>(toBeMeasured:T):T&IHaveStartTime,
+    buildLogObjectOfResponseError : (req : request & additionalData, res: response, err: error ) => IPbResponseErrorLogObject,
 }
 
 
