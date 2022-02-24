@@ -1,6 +1,6 @@
 import { Request, Response} from "express"
-import { IPbRequestErrorLogObject, IPbRequestLogObject, IPbResponseErrorLogObject, IPbResponseLogObject } from "../../pbHttpLogObjects.interfaces"
-import { pbHttpLogObjectBuilder } from "./pbHttpLogObjectBuilder.interface";
+import { IPbRequestErrorLogObject, IPbRequestLogObject, IPbResponseErrorLogObject, IPbResponseLogObject } from "../../httpLogObjects.interfaces"
+import { pbHttpLogObjectBuilder } from "./httpLogObjectBuilder.interface";
 import { IRequestHandlingDurationCalculator } from "./durationCalculator/durationCalculator.interface";
 
 

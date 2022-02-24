@@ -1,13 +1,12 @@
-import { pbHttpLogObjectBuilder } from "./pbHttpLogObjectBuilder/pbHttpLogObjectBuilder.interface";
 import { IDeepCloner } from "./DeepCloner/pbDeepClonner.interface";
-import { IPbRequestErrorLogObject, IPbRequestLogObject, IPbResponseErrorLogObject, IPbResponseLogObject } from "../pbHttpLogObjects.interfaces";
+import { IPbRequestErrorLogObject, IPbRequestLogObject, IPbResponseErrorLogObject, IPbResponseLogObject } from "../httpLogObjects.interfaces";
 import { ILogObjectComposer } from "./logObjectComposer.interface";
 
 
 export class LogObjectComposer<request, response, err> implements ILogObjectComposer<request, response, err> {
     
     private deepClone: IDeepCloner;
-    private logObjectBuilder : pbHttpLogObjectBuilder<request, response, err, IHaveStartTime>;
+    private logObjectBuilder : HttpLogObjectBuilder<request, response, err, IHaveStartTime>;
 
     constructor(logObjectBuilder : pbHttpLogObjectBuilder<request, response, err, IHaveStartTime>, deepClone: IDeepCloner){
         this.deepClone = deepClone;

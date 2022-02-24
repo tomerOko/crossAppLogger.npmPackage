@@ -1,5 +1,4 @@
 import { IncomingHttpHeaders, OutgoingHttpHeaders } from "http";
- 
 
 export interface ILogGeneralProperties<T extends ILogRequestProps | ILogResponseProps | ILogRequestErrorProps | ILogResponseErrorProps >{
     type:"REQUEST" | "VALID RESPONSE" | "ERROR RESPONSE" | "INVALID REQUEST",
@@ -14,8 +13,6 @@ export interface ILogGeneralProperties<T extends ILogRequestProps | ILogResponse
     level:string,
     [key: string] : any,
 } 
-
-
 
 interface ILogRequestProps {
     requestFrom: string,
@@ -39,6 +36,7 @@ interface ILogErrorProps{
   errorMessage: string,
   errorStack: string | undefined,
 }
+
 interface ILogRequestErrorProps extends ILogRequestProps, ILogErrorProps{}
 interface ILogResponseErrorProps extends ILogResponseProps, ILogErrorProps{}
 

@@ -1,6 +1,6 @@
 import { Response } from "express";
-import { IPbExpressRequest } from "../HttpLogger/logObjectComposer/pbHttpLogObjectBuilder/pbHttpLogObjectBuilderForExpress";
-import { IPbHttpLogger } from "../HttpLogger/pbHttpLogger.interface";
+import { IPbExpressRequest } from "../HttpLogger/logObjectComposer/httpLogObjectBuilder/httpLogObjectBuilderForExpress";
+import { IPbHttpLogger } from "../HttpLogger/httpLogger.interface";
 
 export interface ILoggerAsExpressMiddleware{
     logReqResAndErrors: (req:IPbExpressRequest, res: Response) => void

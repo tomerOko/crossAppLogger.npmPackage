@@ -1,21 +1,24 @@
-import { IPbHttpLogger } from "./pbHttpLogger.interface";
 import { ISensativeValuesEncryptor } from "./sensativeKeisEncryptor/sensativeValuesEncryptor.interface";
 import { IDeepCloner } from "./logObjectComposer/DeepCloner/pbDeepClonner.interface";
-import { ILogGeneralProperties } from "./pbHttpLogObjects.interfaces";
-import { LogObjectComposer } from "./logObjectComposer/logObjectComposer.dufault";
 import { ILogObjectComposer } from "./logObjectComposer/logObjectComposer.interface";
+import { IOutputFormater } from "./outputFormater/outputFormater.interface";
+import { IHttpLogger } from "./httpLogger.interface";
 
 
-export class PbHttpLogger<request, response, err> implements IPbHttpLogger<request, response, err> {
+export class PbHttpLogger<request, response, err> implements IHttpLogger<request, response, err> {
     
-    private logObjectComposer : ILogObjectComposer<request, response, err>;
     private sensativeValuesEncryptor : ISensativeValuesEncryptor;
-    private logger: IPbOutputLogger;
+    private outputFormater: IOutputFormater<any>;//todo why any
+    private deepCloner: IDeepCloner;
 
-    constructor(logObjectComposer :  ILogObjectComposer<request, response, err>, sensativeValuesEncryptor : ISensativeValuesEncryptor, deepClone: IDeepCloner, logger: IPbOutputLogger){
-        this.logObjectComposer = logObjectComposer;
+    constructor(
+        sensativeValuesEncryptor : ISensativeValuesEncryptor,
+        deepCloner: IDeepCloner, 
+        outputFormater: IOutputFormater<any>//todo why any
+    ){
         this.sensativeValuesEncryptor =  sensativeValuesEncryptor;
-        this.logger = logger;
+        this.outputFormater = outputFormater;
+        this.deepCloner=deepCloner
     }
 
     logRequest(req: request):void{
@@ -41,15 +44,8 @@ export class PbHttpLogger<request, response, err> implements IPbHttpLogger<reque
 
     private encryptAndLog(builtLog:ILogGeneralProperties<any>){
         const encryptedLogObject = this.sensativeValuesEncryptor.encrypt(builtLog)
-        this.logger.log(encryptedLogObject)
+        this.outputFormater.log(encryptedLogObject)
     }
 }
 
 
-export interface IPbOutputLogger{
-    log:(object:any) => void
-}
-
-class IPbOutputLoggerMock{
-    log(obj:any){console.log(obj)}
-}

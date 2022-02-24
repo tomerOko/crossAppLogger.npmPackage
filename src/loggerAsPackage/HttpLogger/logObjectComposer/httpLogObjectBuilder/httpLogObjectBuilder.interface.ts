@@ -1,7 +1,7 @@
-import { IPbRequestErrorLogObject, IPbRequestLogObject, IPbResponseErrorLogObject, IPbResponseLogObject } from "../../pbHttpLogObjects.interfaces"
+import { IPbRequestErrorLogObject, IPbRequestLogObject, IPbResponseErrorLogObject, IPbResponseLogObject } from "../../httpLogObjects.interfaces"
 
 
-export interface pbHttpLogObjectBuilder<request, response, error, additionalData> {
+export interface IHttpLogObjectBuilder<request, response, error, additionalData> {
     buildLogObjectOfRequest : (req: request) => IPbRequestLogObject,
     buildLogObjectOfResponse : (req: request & additionalData, res: response) => IPbResponseLogObject,
     buildLogObjectOfRequestError : (req: request, err: error) => IPbRequestErrorLogObject,
@@ -10,16 +10,16 @@ export interface pbHttpLogObjectBuilder<request, response, error, additionalData
 }
 
 
-export class PbHttpLogObjectBuilderMock implements pbHttpLogObjectBuilder<any, any, any, {example:string}>{
+export class HttpLogObjectBuilderMock implements IHttpLogObjectBuilder<any, any, any, {example:string}>{
 
-    private static singletonInstance:PbHttpLogObjectBuilderMock;
+    private static singletonInstance:IHttpLogObjectBuilder<any, any, any, {example:string}>;
     private constructor(){}
 
-    public static getInstance():PbHttpLogObjectBuilderMock{
-        if (!PbHttpLogObjectBuilderMock.singletonInstance){
-            PbHttpLogObjectBuilderMock.singletonInstance=new PbHttpLogObjectBuilderMock()
+    public static getInstance():HttpLogObjectBuilderMock{
+        if (!HttpLogObjectBuilderMock.singletonInstance){
+            HttpLogObjectBuilderMock.singletonInstance=new HttpLogObjectBuilderMock()
         }
-        return PbHttpLogObjectBuilderMock.singletonInstance
+        return HttpLogObjectBuilderMock.singletonInstance
     }
 
     buildLogObjectOfRequest(req: any):IPbRequestLogObject{
